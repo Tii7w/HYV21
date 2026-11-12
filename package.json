@@ -1,0 +1,11 @@
+{
+  "name": "hky-estates",
+  "private": true,
+  "description": "Kök klasörden çalıştırma kısayolları. Asıl frontend paketi frontend/ içindedir.",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "backend": "python -m uvicorn app.main:app --reload --timeout-graceful-shutdown 3 --port 8000 --app-dir backend",
+    "build": "npm --prefix frontend run build",
+    "test": "cd backend && python -m pytest -q"
+  }
+}
