@@ -28,7 +28,7 @@ def login(body: LoginRequest, request: Request, response: Response, db: Session 
     user = db.scalar(select(User).where(User.email == body.email.strip().lower()))
     if user is None or not verify_password(body.password, user.password_hash):
         bucket.try_consume()
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "E-posta veya şifre hatalı.")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Kullanıcı adı veya şifre hatalı.")
 
     settings = get_settings()
     response.set_cookie(

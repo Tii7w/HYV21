@@ -1,0 +1,36 @@
+# HKY Estates V2 - Render backend (FastAPI + agent)
+# Render → New → Blueprint ile bu repo seçildiğinde servis ve kalıcı disk otomatik kurulur.
+# Agent arka planda dakikalarca çalıştığı ve SQLite diske yazdığı için kalıcı disk gerekir
+# (disk yalnızca ücretli planlarda vardır; en küçüğü "starter").
+services:
+  - type: web
+    name: hky-estates-api
+    runtime: python
+    plan: starter
+    region: frankfurt
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    # Tablolar alembic ile oluşturulur/güncellenir; ardından API başlar.
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT --timeout-graceful-shutdown 3
+    healthCheckPath: /api/health
+    disk:
+      name: hky-data
+      mountPath: /opt/render/project/src/backend/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      # Oturum imzası ve şifreleme anahtarı: Render rastgele üretir.
+      - key: HKY_SECRET_KEY
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin
+      # Yayındaki yönetici şifresi Render tarafından rastgele üretilir;
+      # Render panelinde Environment sekmesinden görülebilir. Yerel "123" burada kullanılmaz.
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      # Vercel üzerinden yalnızca HTTPS ile erişilir.
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: SESSION_HOURS
+        value: "24"

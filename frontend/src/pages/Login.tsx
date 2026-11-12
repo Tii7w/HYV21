@@ -32,8 +32,8 @@ export default function Login({ onLogin }: { onLogin: (user: User) => void }) {
         </div>
         <div className="panel-body stack" style={{ gap: 14 }}>
           <p className="muted" style={{ margin: 0 }}>Fırsat ajanına giriş yapın.</p>
-          <label className="field"><span>E-posta</span>
-            <input className="input" type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label className="field"><span>Kullanıcı adı</span>
+            <input className="input" type="text" autoComplete="username" autoCapitalize="none" spellCheck={false} required value={email} onChange={(e) => setEmail(e.target.value)} />
           </label>
           <label className="field"><span>Şifre</span>
             <input className="input" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
